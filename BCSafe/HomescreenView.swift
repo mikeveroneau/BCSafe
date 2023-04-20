@@ -6,8 +6,10 @@
 //
 
 import SwiftUI
+import Firebase
 
 struct HomescreenView: View {
+    @Environment(\.dismiss) var dismiss
     @EnvironmentObject var homescreenVM: HomescreenViewModel
     @State private var postSheetIsPresented = false
     
@@ -32,6 +34,18 @@ struct HomescreenView: View {
             }
             .listStyle(.plain)
             .toolbar {
+                ToolbarItem(placement: .navigationBarLeading) {
+                    Button("Sign Out") {
+                        do {
+                            try Auth.auth().signOut()
+                            print("🪵➡️ Log out successful!")
+                            dismiss()
+                        } catch {
+                            print("😡 ERROR: Could not sign out!")
+                        }
+                    }
+                }
+                
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button {
                         postSheetIsPresented.toggle()
