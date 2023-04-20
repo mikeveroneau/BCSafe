@@ -88,7 +88,7 @@ struct PostView: View {
                 }
                 coordinateRegion = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: post.latitude, longitude: post.longitude), span: MKCoordinateSpan(latitudeDelta: 0.045, longitudeDelta: 0.045))
                 annotations = [Annotation(title: post.title, coordinate: CLLocationCoordinate2D(latitude: post.latitude, longitude: post.longitude))]
-                //TODO: Make it so this is added to the array so that it can be called later to annotate the full BC map
+                //TODO: Make it so this is added to the array so that it can be called later to annotate the full BC map.
             }
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
