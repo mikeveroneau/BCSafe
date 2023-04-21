@@ -32,6 +32,7 @@ struct HomescreenView: View {
                     }
                 }
             }
+            .navigationTitle("Alerts")
             .listStyle(.plain)
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
