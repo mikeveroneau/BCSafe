@@ -27,7 +27,8 @@ struct PostView: View {
     @State private var coordinateRegion = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: 0.0, longitude: 0.0), span: MKCoordinateSpan(latitudeDelta: 0.2, longitudeDelta: 0.2))
     let annotation = MKPointAnnotation()
     @State private var annotations: [Annotation] = []
-    //@State private var showUserLocation = false
+    @State private var imageFront = "180"
+    @State private var imageBack = "0"
     
     var body: some View {
         NavigationStack {
@@ -71,11 +72,35 @@ struct PostView: View {
                         Map(coordinateRegion: $locationManager.region, showsUserLocation: true)
                             .cornerRadius(10)
                     } else {
-                        Map(coordinateRegion: $coordinateRegion, showsUserLocation: false, annotationItems: annotations) { annotation in
-                            MapAnnotation(coordinate: annotation.coordinate) {
-                                Image(systemName: "mappin")
-                                    .font(.system(size: 40))
-                                    .foregroundColor(.red)
+                        HStack {
+                            Map(coordinateRegion: $coordinateRegion, showsUserLocation: false, annotationItems: annotations) { annotation in
+                                MapAnnotation(coordinate: annotation.coordinate) {
+                                    Image(systemName: "mappin")
+                                        .font(.system(size: 40))
+                                        .foregroundColor(.red)
+                                }
+                            }
+                            
+                            VStack {
+                                AsyncImage(url: URL(string: "https://maps.googleapis.com/maps/api/streetview?size=400x400&location=\(post.latitude),\(post.longitude)&fov=80&heading=\(imageFront)&pitch=0&key=AIzaSyDqxLZ2hZ_f67vxaTbxf1k3YGDUgIH_l7Y")) { image in
+                                    image
+                                        .resizable()
+                                        .scaledToFit()
+                                } placeholder: {
+                                    Image(systemName: "photo")
+                                        .resizable()
+                                        .scaledToFit()
+                                }
+                                
+                                AsyncImage(url: URL(string: "https://maps.googleapis.com/maps/api/streetview?size=400x400&location=\(post.latitude),\(post.longitude)&fov=80&heading=\(imageBack)&pitch=0&key=AIzaSyDqxLZ2hZ_f67vxaTbxf1k3YGDUgIH_l7Y")) { image in
+                                    image
+                                        .resizable()
+                                        .scaledToFit()
+                                } placeholder: {
+                                    Image(systemName: "photo")
+                                        .resizable()
+                                        .scaledToFit()
+                                }
                             }
                         }
                     }
