@@ -35,19 +35,6 @@ struct HomeBarView: View {
                 }
                 .tag(2)
         }
-        .toolbar {
-            ToolbarItem(placement: .navigationBarLeading) {
-                Button("Sign Out") {
-                    do {
-                        try Auth.auth().signOut()
-                        print("🪵➡️ Log out successful!")
-                        dismiss()
-                    } catch {
-                        print("😡 ERROR: Could not sign out!")
-                    }
-                }
-            }
-        }
     }
 }
 

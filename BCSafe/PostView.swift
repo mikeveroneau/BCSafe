@@ -10,11 +10,11 @@ import Firebase
 import MapKit
 
 struct PostView: View {
-    struct Annotation: Identifiable {
-        let id = UUID().uuidString
-        var title: String
-        var coordinate: CLLocationCoordinate2D
-    }
+//    struct Annotation: Identifiable {
+//        let id = UUID().uuidString
+//        var title: String
+//        var coordinate: CLLocationCoordinate2D
+//    }
     
     @EnvironmentObject var homescreenVM: HomescreenViewModel
     @EnvironmentObject var locationManager: LocationManager
@@ -24,9 +24,10 @@ struct PostView: View {
     @State var post: Post
     @State var postedByThisUser = false
     @State private var mapRegion = MKCoordinateRegion()
-    @State private var coordinateRegion = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: 0.0, longitude: 0.0), span: MKCoordinateSpan(latitudeDelta: 0.2, longitudeDelta: 0.2))
+    @State private var coordinateRegion = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: 0.0, longitude: 0.0), span: MKCoordinateSpan(latitudeDelta: 0.0, longitudeDelta: 0.0))
     let annotation = MKPointAnnotation()
-    @State private var annotations: [Annotation] = []
+    @State private var userCoordinateRegion = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: 0.0, longitude: 0.0), span: MKCoordinateSpan(latitudeDelta: 0.0, longitudeDelta: 0.0))
+    @State private var annotationsSmallMap: [Annotation] = []
     @State private var imageFront = "180"
     @State private var imageBack = "0"
     
@@ -69,17 +70,18 @@ struct PostView: View {
                 
                 if post.showUserLocation {
                     if post.id == nil {
-                        Map(coordinateRegion: $locationManager.region, showsUserLocation: true)
+                        Map(coordinateRegion: $userCoordinateRegion, showsUserLocation: true)
                             .cornerRadius(10)
                     } else {
                         HStack {
-                            Map(coordinateRegion: $coordinateRegion, showsUserLocation: false, annotationItems: annotations) { annotation in
+                            Map(coordinateRegion: $coordinateRegion, showsUserLocation: false, annotationItems: annotationsSmallMap) { annotation in
                                 MapAnnotation(coordinate: annotation.coordinate) {
                                     Image(systemName: "mappin")
                                         .font(.system(size: 40))
                                         .foregroundColor(.red)
                                 }
                             }
+                            .cornerRadius(10)
                             
                             VStack {
                                 AsyncImage(url: URL(string: "https://maps.googleapis.com/maps/api/streetview?size=400x400&location=\(post.latitude),\(post.longitude)&fov=80&heading=\(imageFront)&pitch=0&key=AIzaSyDClUil_VpFPEeWKynObTH_yE6nfDPbPGw")) { image in
@@ -111,9 +113,9 @@ struct PostView: View {
                 if post.reviewer == Auth.auth().currentUser?.email {
                     postedByThisUser = true
                 }
-                coordinateRegion = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: post.latitude, longitude: post.longitude), span: MKCoordinateSpan(latitudeDelta: 0.045, longitudeDelta: 0.045))
-                annotations = [Annotation(title: post.title, coordinate: CLLocationCoordinate2D(latitude: post.latitude, longitude: post.longitude))]
-                //TODO: Make it so this is added to the array so that it can be called later to annotate the full BC map.
+                userCoordinateRegion = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: locationManager.location?.coordinate.latitude ?? 0.0, longitude: locationManager.location?.coordinate.longitude ?? 0.0), span: MKCoordinateSpan(latitudeDelta: 0.0045, longitudeDelta: 0.0045))
+                coordinateRegion = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: post.latitude, longitude: post.longitude), span: MKCoordinateSpan(latitudeDelta: 0.0045, longitudeDelta: 0.0045))
+                annotationsSmallMap = [post.annotation]
             }
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {

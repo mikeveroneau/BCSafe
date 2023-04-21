@@ -9,21 +9,19 @@ import SwiftUI
 import MapKit
 
 struct MapViewModel: View {
-    struct Annotation: Identifiable {
-        let id = UUID().uuidString
-        var title: String
-        var coordinate: CLLocationCoordinate2D
-    }
-    @State private var annotations: [Annotation] = []
-    @State private var coordinateRegion = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: 42.33845459989143, longitude: -71.16541216111281), span: MKCoordinateSpan(latitudeDelta: 0.045, longitudeDelta: 0.045))
+    @EnvironmentObject var homescreenVM: HomescreenViewModel
+    @EnvironmentObject var locationManager: LocationManager
+    
+    @State private var annotationsLargeMap: [Annotation] = []
     @State private var showMessage = false
+    @State private var coordinateRegion = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: 0.0, longitude: 0.0), span: MKCoordinateSpan(latitudeDelta: 0.0, longitudeDelta: 0.0))
     
     var body: some View {
         VStack {
-            Map(coordinateRegion: $coordinateRegion, showsUserLocation: false, annotationItems: annotations) { annotation in
+            Map(coordinateRegion: $coordinateRegion, showsUserLocation: true, annotationItems: annotationsLargeMap) { annotation in
                 MapAnnotation(coordinate: annotation.coordinate) {
                     Button {
-                        showMessage = true
+                        showMessage.toggle()
                     } label: {
                         Image(systemName: "mappin")
                             .font(.system(size: 40))
@@ -35,15 +33,17 @@ struct MapViewModel: View {
                                 .foregroundColor(.white)
                                 .cornerRadius(3)
                             
-                            Text(annotations[0].title)
+                            Text(annotation.title)
                                 .bold()
                         }
                     }
                 }
             }
         }
+        .edgesIgnoringSafeArea(.top)
         .onAppear {
-            annotations.append(Annotation(title: "Help", coordinate: CLLocationCoordinate2D(latitude: 42.33845459989143, longitude: -71.16541216111281)))
+            coordinateRegion = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: locationManager.location?.coordinate.latitude ?? 0.0, longitude: locationManager.location?.coordinate.longitude ?? 0.0), span: MKCoordinateSpan(latitudeDelta: 0.0045, longitudeDelta: 0.0045))
+            annotationsLargeMap = homescreenVM.postArray.map {$0.annotation}
         }
     }
 }
@@ -51,5 +51,7 @@ struct MapViewModel: View {
 struct MapView_Previews: PreviewProvider {
     static var previews: some View {
         MapViewModel()
+            .environmentObject(HomescreenViewModel())
+            .environmentObject(LocationManager())
     }
 }

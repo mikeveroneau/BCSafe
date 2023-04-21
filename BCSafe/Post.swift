@@ -23,6 +23,10 @@ struct Post: Identifiable, Codable {
     var coordinate: CLLocationCoordinate2D {
         CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
     }
+    var annotation: Annotation {
+        Annotation(title: title, coordinate: coordinate)
+    }
+    
     
 //    var dictionary: [String: Any] {
 //        return ["name": name, "address": address, "latitude": latitude, "longitude": longitude]

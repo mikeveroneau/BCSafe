@@ -24,6 +24,7 @@
 		27622CBD29F0742800BB00C4 /* Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27622CBC29F0742800BB00C4 /* Post.swift */; };
 		27622CC129F07F6800BB00C4 /* HomescreenViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27622CC029F07F6800BB00C4 /* HomescreenViewModel.swift */; };
 		278C6E2529F08D2F00115BA4 /* HomeBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 278C6E2429F08D2F00115BA4 /* HomeBarView.swift */; };
+		27DD84F229F3340F004E0BFB /* Annotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27DD84F129F3340F004E0BFB /* Annotation.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -41,6 +42,7 @@
 		27622CBC29F0742800BB00C4 /* Post.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Post.swift; sourceTree = "<group>"; };
 		27622CC029F07F6800BB00C4 /* HomescreenViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomescreenViewModel.swift; sourceTree = "<group>"; };
 		278C6E2429F08D2F00115BA4 /* HomeBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeBarView.swift; sourceTree = "<group>"; };
+		27DD84F129F3340F004E0BFB /* Annotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Annotation.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -80,6 +82,7 @@
 				27622C9729F04EB700BB00C4 /* BCSafeApp.swift */,
 				272A868829F0B37C00B26A54 /* LocationManager.swift */,
 				27622CBC29F0742800BB00C4 /* Post.swift */,
+				27DD84F129F3340F004E0BFB /* Annotation.swift */,
 				27622CC029F07F6800BB00C4 /* HomescreenViewModel.swift */,
 				27622C9929F04EB700BB00C4 /* LoginView.swift */,
 				278C6E2429F08D2F00115BA4 /* HomeBarView.swift */,
@@ -190,6 +193,7 @@
 				27622CBD29F0742800BB00C4 /* Post.swift in Sources */,
 				27622C9829F04EB700BB00C4 /* BCSafeApp.swift in Sources */,
 				27622CC129F07F6800BB00C4 /* HomescreenViewModel.swift in Sources */,
+				27DD84F229F3340F004E0BFB /* Annotation.swift in Sources */,
 				27622CB529F066DD00BB00C4 /* MapView.swift in Sources */,
 				27622CB329F05F2900BB00C4 /* HomescreenView.swift in Sources */,
 			);
