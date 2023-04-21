@@ -82,7 +82,7 @@ struct PostView: View {
                             }
                             
                             VStack {
-                                AsyncImage(url: URL(string: "https://maps.googleapis.com/maps/api/streetview?size=400x400&location=\(post.latitude),\(post.longitude)&fov=80&heading=\(imageFront)&pitch=0&key=AIzaSyDqxLZ2hZ_f67vxaTbxf1k3YGDUgIH_l7Y")) { image in
+                                AsyncImage(url: URL(string: "https://maps.googleapis.com/maps/api/streetview?size=400x400&location=\(post.latitude),\(post.longitude)&fov=80&heading=\(imageFront)&pitch=0&key=AIzaSyDClUil_VpFPEeWKynObTH_yE6nfDPbPGw")) { image in
                                     image
                                         .resizable()
                                         .scaledToFit()
@@ -92,7 +92,7 @@ struct PostView: View {
                                         .scaledToFit()
                                 }
                                 
-                                AsyncImage(url: URL(string: "https://maps.googleapis.com/maps/api/streetview?size=400x400&location=\(post.latitude),\(post.longitude)&fov=80&heading=\(imageBack)&pitch=0&key=AIzaSyDqxLZ2hZ_f67vxaTbxf1k3YGDUgIH_l7Y")) { image in
+                                AsyncImage(url: URL(string: "https://maps.googleapis.com/maps/api/streetview?size=400x400&location=\(post.latitude),\(post.longitude)&fov=80&heading=\(imageBack)&pitch=0&key=AIzaSyDClUil_VpFPEeWKynObTH_yE6nfDPbPGw")) { image in
                                     image
                                         .resizable()
                                         .scaledToFit()

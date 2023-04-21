@@ -16,7 +16,7 @@ struct ContactView: View {
                 Text("Call me")
             }
             
-            AsyncImage(url: URL(string: "https://maps.googleapis.com/maps/api/streetview?size=400x400&location=47.5763831,-122.4211769&fov=80&heading=100&pitch=0&key=AIzaSyDqxLZ2hZ_f67vxaTbxf1k3YGDUgIH_l7Y")) { image in
+            AsyncImage(url: URL(string: "https://maps.googleapis.com/maps/api/streetview?size=400x400&location=47.5763831,-122.4211769&fov=80&heading=100&pitch=0&key=AIzaSyDClUil_VpFPEeWKynObTH_yE6nfDPbPGw")) { image in
                 image
                     .resizable()
                     .scaledToFit()
