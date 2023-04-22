@@ -132,7 +132,14 @@ struct PostView: View {
                             //annotation.title = post.title
                             //annotation.coordinate = CLLocationCoordinate2D(latitude: post.latitude, longitude: post.longitude)
                         }
-                        homescreenVM.savePost(post: post)
+                        Task {
+                            let success = await homescreenVM.savePost(post: post)
+                            if success {
+                                dismiss()
+                            } else {
+                                print("😡 DANG! Error saving spot!")
+                            }
+                        }
                         dismiss()
                     }
                 }

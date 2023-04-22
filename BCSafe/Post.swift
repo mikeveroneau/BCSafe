@@ -10,8 +10,8 @@ import Firebase
 import FirebaseFirestoreSwift
 import CoreLocation
 
-struct Post: Identifiable, Codable {
-    var id: String?
+struct Post: Identifiable, Codable, Equatable {
+    @DocumentID var id: String?
     var title = ""
     var message = ""
     var eventLocation = ""
@@ -28,7 +28,8 @@ struct Post: Identifiable, Codable {
     }
     
     
-//    var dictionary: [String: Any] {
-//        return ["name": name, "address": address, "latitude": latitude, "longitude": longitude]
-//    }
+    var dictionary: [String: Any] {
+        return ["title": title, "message": message, "eventLocation": eventLocation, "showUserLocation": showUserLocation, "postedOn": Timestamp(date: Date()), "reviewer": reviewer, "latitude": latitude, "longitude": longitude]
+    }
+    //TODO: Need to figure out a way to add annotations
 }

@@ -15,7 +15,7 @@ struct Annotation: Identifiable {
     var title: String
     var coordinate: CLLocationCoordinate2D
 
-//    var dictionary: [String: Any] {
-//            return ["title": title, "latitude": coordinate.latitude, "longitude": coordinate.longitude]
-//        }
+    var dictionary: [String: Any] {
+            return ["title": title, "latitude": coordinate.latitude, "longitude": coordinate.longitude]
+        }
 }

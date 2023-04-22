@@ -7,8 +7,10 @@
 
 import SwiftUI
 import Firebase
+import FirebaseFirestoreSwift
 
 struct HomescreenView: View {
+    @FirestoreQuery(collectionPath: "posts") var posts: [Post]
     @Environment(\.dismiss) var dismiss
     @EnvironmentObject var homescreenVM: HomescreenViewModel
     @State private var postSheetIsPresented = false
@@ -16,7 +18,7 @@ struct HomescreenView: View {
     var body: some View {
         NavigationStack {
             List {
-                ForEach(homescreenVM.postArray) { post in
+                ForEach(posts) { post in
                     NavigationLink {
                         PostView(post: post)
                     } label: {
