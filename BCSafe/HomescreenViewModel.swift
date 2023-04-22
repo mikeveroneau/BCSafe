@@ -42,4 +42,38 @@ class HomescreenViewModel: ObservableObject {
             }
         }
     }
+    
+    func deletePost(post: Post) async -> Bool {
+        let db = Firestore.firestore()
+        guard let postID = post.id else {
+            print("😡 ERROR: post.id = \(post.id ?? "nil"). This should not have happened.")
+            return false
+        }
+        
+        do {
+            let _ = try await db.collection("posts").document(postID).delete()
+            print("🗑️ Document succesfully deleted")
+            return true
+        } catch {
+            print("😡 ERROR: removing document \(error.localizedDescription)")
+            return false
+        }
+    }
+    
+    func deleteAnnotation(post: Post, annotation: Annotation) async -> Bool {
+        let db = Firestore.firestore()
+        guard let postID = post.id, let annotationID = annotation.id else {
+            print("😡 ERROR: post.id = \(post.id ?? "nil"), annotation.id = \(annotation.id ?? "nil"). This should not have happened.")
+            return false
+        }
+        
+        do {
+            let _ = try await db.collection("posts").document(postID).collection("annotations").document(annotationID).delete()
+            print("🗑️ Document succesfully deleted")
+            return true
+        } catch {
+            print("😡 ERROR: removing document \(error.localizedDescription)")
+            return false
+        }
+    }
 }

@@ -14,7 +14,7 @@ struct PostView: View {
     @EnvironmentObject var homescreenVM: HomescreenViewModel
     @EnvironmentObject var locationManager: LocationManager
     
-    //@FirestoreQuery(collectionPath: "posts") var annotations: [Annotation]
+    @FirestoreQuery(collectionPath: "posts") var annotations: [Annotation]
     
     @Environment(\.dismiss) var dismiss
     
@@ -105,37 +105,69 @@ struct PostView: View {
                     }
                 }
             }
-            .navigationBarBackButtonHidden()
+            .navigationBarTitleDisplayMode(.inline)
+            .navigationBarBackButtonHidden(postedByThisUser)
             .onAppear {
                 if post.reviewer == Auth.auth().currentUser?.email {
                     postedByThisUser = true
                 }
                 userCoordinateRegion = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: locationManager.location?.coordinate.latitude ?? 0.0, longitude: locationManager.location?.coordinate.longitude ?? 0.0), span: MKCoordinateSpan(latitudeDelta: 0.0045, longitudeDelta: 0.0045))
                 coordinateRegion = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: post.latitude, longitude: post.longitude), span: MKCoordinateSpan(latitudeDelta: 0.0045, longitudeDelta: 0.0045))
-                annotationsSmallMap = [post.annotation]
+                annotationsSmallMap = [post.annotation] //TODO: fix this
+                if post.id != nil {
+                    $annotations.path = "posts/\(post.id ?? "")/annotations"
+                }
             }
             .toolbar {
-                ToolbarItem(placement: .navigationBarLeading) {
-                    Button("Cancel") {
-                        dismiss()
+                if postedByThisUser {
+                    ToolbarItem(placement: .navigationBarLeading) {
+                        Button("Cancel") {
+                            dismiss()
+                        }
+                    }
+                    
+                    ToolbarItem(placement: .navigationBarTrailing) {
+                        Button("Save") {
+                            if post.id == nil {
+                                post.latitude = locationManager.region.center.latitude
+                                post.longitude = locationManager.region.center.longitude
+                            }
+                            Task {
+                                let successPost = await homescreenVM.savePost(post: post, annotation: post.annotation)
+                                if successPost {
+                                    if post.showUserLocation == false {
+                                        Task {
+                                            let successDeleteAnnotation = await homescreenVM.deleteAnnotation(post: post, annotation: post.annotation)
+                                            if successDeleteAnnotation {
+                                                dismiss()
+                                            }
+                                        }
+                                    }
+                                    dismiss()
+                                } else {
+                                    print("😡 DANG! Error saving post!")
+                                }
+                            }
+                            dismiss()
+                        }
                     }
                 }
                 
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Button("Save") {
-                        if post.id == nil {
-                            post.latitude = locationManager.region.center.latitude
-                            post.longitude = locationManager.region.center.longitude
-                        }
-                        Task {
-                            let successPost = await homescreenVM.savePost(post: post, annotation: post.annotation)
-                            if successPost {
-                                dismiss()
-                            } else {
-                                print("😡 DANG! Error saving post!")
+                if post.id != nil && postedByThisUser {
+                    ToolbarItemGroup(placement: .bottomBar) {
+                        Spacer()
+                        
+                        Button {
+                            Task {
+                                let success = await homescreenVM.deletePost(post: post)
+                                if success {
+                                    dismiss()
+                                }
                             }
+                        } label: {
+                            Image(systemName: "trash")
                         }
-                        dismiss()
+
                     }
                 }
             }

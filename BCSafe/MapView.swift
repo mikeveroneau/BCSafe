@@ -21,7 +21,7 @@ struct MapViewModel: View {
     @State private var coordinateRegion = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: 0.0, longitude: 0.0), span: MKCoordinateSpan(latitudeDelta: 0.0, longitudeDelta: 0.0))
     
     var body: some View {
-        VStack {
+        ZStack {
             Map(coordinateRegion: $coordinateRegion, showsUserLocation: true, annotationItems: annotationsLargeMap) { annotation in
                 MapAnnotation(coordinate: annotation.coordinate) {
                     Button {
@@ -43,8 +43,19 @@ struct MapViewModel: View {
                     }
                 }
             }
+            .edgesIgnoringSafeArea(.top)
+            
+            VStack {
+                Rectangle()
+                    .fill(Color.white.opacity(0.8))
+                    .blur(radius: 5)
+                    .ignoresSafeArea()
+                    .frame(height: 8)
+                //TODO: Fix this
+                
+                Spacer()
+            }
         }
-        .edgesIgnoringSafeArea(.top)
         .onAppear {
             coordinateRegion = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: locationManager.location?.coordinate.latitude ?? 0.0, longitude: locationManager.location?.coordinate.longitude ?? 0.0), span: MKCoordinateSpan(latitudeDelta: 0.0045, longitudeDelta: 0.0045))
         }
