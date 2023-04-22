@@ -7,8 +7,12 @@
 
 import SwiftUI
 import MapKit
+import FirebaseFirestoreSwift
 
 struct MapViewModel: View {
+    @FirestoreQuery(collectionPath: "posts") var posts: [Post]
+    @FirestoreQuery(collectionPath: "posts") var annotations: [Annotation]
+    
     @EnvironmentObject var homescreenVM: HomescreenViewModel
     @EnvironmentObject var locationManager: LocationManager
     
@@ -43,8 +47,15 @@ struct MapViewModel: View {
         .edgesIgnoringSafeArea(.top)
         .onAppear {
             coordinateRegion = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: locationManager.location?.coordinate.latitude ?? 0.0, longitude: locationManager.location?.coordinate.longitude ?? 0.0), span: MKCoordinateSpan(latitudeDelta: 0.0045, longitudeDelta: 0.0045))
-            //annotationsLargeMap = homescreenVM.postArray.map {$0.annotation}
-            //TODO: Need to add a collection of annotations to posts
+        }
+        .onChange(of: posts) { _ in
+            annotationsLargeMap.removeAll()
+            for post in posts {
+                $annotations.path = "posts/\(post.id ?? "")/annotations"
+                for annotation in annotations {
+                    annotationsLargeMap.append(annotation)
+                }
+            }
         }
     }
 }

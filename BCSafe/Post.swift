@@ -24,7 +24,7 @@ struct Post: Identifiable, Codable, Equatable {
         CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
     }
     var annotation: Annotation {
-        Annotation(title: title, coordinate: coordinate)
+        Annotation(title: title, latitude: latitude, longitude: longitude)
     }
     
     

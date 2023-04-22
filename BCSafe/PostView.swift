@@ -7,17 +7,14 @@
 
 import SwiftUI
 import Firebase
+import FirebaseFirestoreSwift
 import MapKit
 
 struct PostView: View {
-//    struct Annotation: Identifiable {
-//        let id = UUID().uuidString
-//        var title: String
-//        var coordinate: CLLocationCoordinate2D
-//    }
-    
     @EnvironmentObject var homescreenVM: HomescreenViewModel
     @EnvironmentObject var locationManager: LocationManager
+    
+    //@FirestoreQuery(collectionPath: "posts") var annotations: [Annotation]
     
     @Environment(\.dismiss) var dismiss
     
@@ -129,15 +126,13 @@ struct PostView: View {
                         if post.id == nil {
                             post.latitude = locationManager.region.center.latitude
                             post.longitude = locationManager.region.center.longitude
-                            //annotation.title = post.title
-                            //annotation.coordinate = CLLocationCoordinate2D(latitude: post.latitude, longitude: post.longitude)
                         }
                         Task {
-                            let success = await homescreenVM.savePost(post: post)
-                            if success {
+                            let successPost = await homescreenVM.savePost(post: post, annotation: post.annotation)
+                            if successPost {
                                 dismiss()
                             } else {
-                                print("😡 DANG! Error saving spot!")
+                                print("😡 DANG! Error saving post!")
                             }
                         }
                         dismiss()

@@ -13,10 +13,10 @@ import FirebaseStorage
 @MainActor
 
 class HomescreenViewModel: ObservableObject {
-    //@Published var postArray: [Post] = []
     @Published var post = Post()
+    @Published var annotation = Annotation()
     
-    func savePost(post: Post) async -> Bool {
+    func savePost(post: Post, annotation: Annotation) async -> Bool {
         let db = Firestore.firestore()
         
         if let id = post.id {
@@ -33,6 +33,7 @@ class HomescreenViewModel: ObservableObject {
                 let documentRef = try await db.collection("posts").addDocument(data: post.dictionary)
                 self.post = post
                 self.post.id = documentRef.documentID
+                _ = try await db.collection("posts/\(self.post.id!)/annotations").addDocument(data: annotation.dictionary)
                 print("🐣 Data added successfully!")
                 return true
             } catch {
@@ -41,16 +42,4 @@ class HomescreenViewModel: ObservableObject {
             }
         }
     }
-    
-//    func savePost(post: Post) {
-//        if post.id == nil {
-//            var newPost = post
-//            newPost.id = UUID().uuidString
-//            postArray.append(newPost)
-//        } else {
-//            if let index = postArray.firstIndex(where: {$0.id == post.id}) {
-//                postArray[index] = post
-//            }
-//        }
-//    }
 }

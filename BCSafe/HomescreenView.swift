@@ -11,6 +11,7 @@ import FirebaseFirestoreSwift
 
 struct HomescreenView: View {
     @FirestoreQuery(collectionPath: "posts") var posts: [Post]
+    //@FirestoreQuery(collectionPath: "posts") var annotations: [Annotation]
     @Environment(\.dismiss) var dismiss
     @EnvironmentObject var homescreenVM: HomescreenViewModel
     @State private var postSheetIsPresented = false
