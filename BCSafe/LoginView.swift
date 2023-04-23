@@ -9,6 +9,8 @@ import SwiftUI
 import Firebase
 
 struct LoginView: View {
+    @EnvironmentObject var authenticationVM: AuthenticationViewModel
+    
     enum Field {
         case email, password
     }
@@ -80,6 +82,15 @@ struct LoginView: View {
             .tint(Color("BCMaroon"))
             .font(.title2)
             .padding(.top)
+            
+            Button {
+                Task {
+                    await authenticationVM.signInWithGoogle()
+                }
+            } label: {
+                Text("Google")
+            }
+
         }
         .alert(alertMessage, isPresented: $showingAlert) {
             Button("OK", role: .cancel) {}
@@ -132,5 +143,6 @@ struct LoginView: View {
 struct LoginView_Previews: PreviewProvider {
     static var previews: some View {
         LoginView()
+            .environmentObject(AuthenticationViewModel())
     }
 }
