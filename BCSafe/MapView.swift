@@ -67,6 +67,7 @@ struct MapViewModel: View {
                     annotationsLargeMap.append(annotation)
                 }
             }
+            //TODO: Make this work right
         }
     }
 }

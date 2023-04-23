@@ -16,7 +16,7 @@ class HomescreenViewModel: ObservableObject {
     @Published var post = Post()
     @Published var annotation = Annotation()
     
-    func savePost(post: Post, annotation: Annotation) async -> Bool {
+    func savePost(post: Post, annotation: Annotation, showUserLocation: Bool) async -> Bool {
         let db = Firestore.firestore()
         
         if let id = post.id {
@@ -27,7 +27,9 @@ class HomescreenViewModel: ObservableObject {
                 if !snapshot.isEmpty {
                     print("Already an annotation")
                 } else {
-                    _ = try await subcollectionRef.addDocument(data: annotation.dictionary)
+                    if showUserLocation {
+                        _ = try await subcollectionRef.addDocument(data: annotation.dictionary)
+                    }
                     print("Re-added annotation")
                 }
                 print("😎 Data upploaded successfully!")
@@ -41,7 +43,9 @@ class HomescreenViewModel: ObservableObject {
                 let documentRef = try await db.collection("posts").addDocument(data: post.dictionary)
                 self.post = post
                 self.post.id = documentRef.documentID
-                _ = try await db.collection("posts/\(self.post.id!)/annotations").addDocument(data: annotation.dictionary)
+                if showUserLocation {
+                    _ = try await db.collection("posts/\(self.post.id!)/annotations").addDocument(data: annotation.dictionary)
+                }
                 print("🐣 Data added successfully!")
                 return true
             } catch {

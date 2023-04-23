@@ -133,8 +133,8 @@ struct PostView: View {
                                 post.longitude = locationManager.region.center.longitude
                             }
                             Task {
-                                let successPost = await homescreenVM.savePost(post: post, annotation: post.annotation)
-                                if successPost {
+                                let successPost = await homescreenVM.savePost(post: post, annotation: post.annotation, showUserLocation: post.showUserLocation)
+                                if successPost && post.id != nil {
                                     if post.showUserLocation == false {
                                         Task {
                                             let successDeleteAnnotation = await homescreenVM.deleteAnnotation(post: post)
@@ -145,7 +145,7 @@ struct PostView: View {
                                     }
                                     dismiss()
                                 } else {
-                                    print("😡 DANG! Error saving post!")
+                                    print("No subcollection of annotations to add")
                                 }
                             }
                             dismiss()
