@@ -137,7 +137,7 @@ struct PostView: View {
                                 if successPost {
                                     if post.showUserLocation == false {
                                         Task {
-                                            let successDeleteAnnotation = await homescreenVM.deleteAnnotation(post: post, annotation: post.annotation)
+                                            let successDeleteAnnotation = await homescreenVM.deleteAnnotation(post: post)
                                             if successDeleteAnnotation {
                                                 dismiss()
                                             }
