@@ -88,17 +88,9 @@
 			children = (
 				279155AC29F5CEFA002858FE /* Info.plist */,
 				27622C9729F04EB700BB00C4 /* BCSafeApp.swift */,
-				272A868829F0B37C00B26A54 /* LocationManager.swift */,
-				27622CBC29F0742800BB00C4 /* Post.swift */,
-				27DD84F129F3340F004E0BFB /* Annotation.swift */,
-				27622CC029F07F6800BB00C4 /* HomescreenViewModel.swift */,
-				279155AD29F5D32A002858FE /* AuthenticationViewModel.swift */,
-				27622C9929F04EB700BB00C4 /* LoginView.swift */,
-				278C6E2429F08D2F00115BA4 /* HomeBarView.swift */,
-				27622CB229F05F2900BB00C4 /* HomescreenView.swift */,
-				27622CB829F0729300BB00C4 /* PostView.swift */,
-				27622CB429F066DD00BB00C4 /* MapView.swift */,
-				27622CB629F066ED00BB00C4 /* ContactView.swift */,
+				278CB81029F61CBC0080AD7C /* ViewModels */,
+				278CB81129F61CCA0080AD7C /* Models */,
+				278CB81229F61CD60080AD7C /* Views */,
 				27622C9B29F04EB700BB00C4 /* Assets.xcassets */,
 				279155AA29F5CE2F002858FE /* GoogleService-Info.plist */,
 				27622C9D29F04EB700BB00C4 /* Preview Content */,
@@ -112,6 +104,38 @@
 				27622C9E29F04EB700BB00C4 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		278CB81029F61CBC0080AD7C /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				272A868829F0B37C00B26A54 /* LocationManager.swift */,
+				27622CC029F07F6800BB00C4 /* HomescreenViewModel.swift */,
+				279155AD29F5D32A002858FE /* AuthenticationViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		278CB81129F61CCA0080AD7C /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				27622CBC29F0742800BB00C4 /* Post.swift */,
+				27DD84F129F3340F004E0BFB /* Annotation.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		278CB81229F61CD60080AD7C /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				27622C9929F04EB700BB00C4 /* LoginView.swift */,
+				278C6E2429F08D2F00115BA4 /* HomeBarView.swift */,
+				27622CB229F05F2900BB00C4 /* HomescreenView.swift */,
+				27622CB829F0729300BB00C4 /* PostView.swift */,
+				27622CB429F066DD00BB00C4 /* MapView.swift */,
+				27622CB629F066ED00BB00C4 /* ContactView.swift */,
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
