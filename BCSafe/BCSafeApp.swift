@@ -30,14 +30,14 @@ struct BCSafeApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
     @StateObject var homescreenVM = HomescreenViewModel()
     @StateObject var locationManager = LocationManager()
-    @StateObject var authenticationVM = AuthenticationViewModel()
+    @StateObject var loginVM = LoginViewModel()
     
     var body: some Scene {
         WindowGroup {
             LoginView()
                 .environmentObject(homescreenVM)
                 .environmentObject(locationManager)
-                .environmentObject(authenticationVM)
+                .environmentObject(loginVM)
         }
     }
 }

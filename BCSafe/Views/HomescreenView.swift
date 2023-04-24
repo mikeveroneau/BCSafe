@@ -18,19 +18,26 @@ struct HomescreenView: View {
     
     var body: some View {
         NavigationStack {
-            List {
-                ForEach(posts) { post in
-                    NavigationLink {
-                        PostView(post: post)
-                    } label: {
-                        ZStack {
-                            Rectangle()
-                                .frame(height: 100)
-                                .foregroundColor(.black.opacity(0.7))
-                                .cornerRadius(9)
-                            
-                            Text(post.title)
-                                .foregroundColor(.white)
+            VStack {
+                if posts.isEmpty {
+                    Text("Nothing To Show")
+                        .padding(.top, 300)
+                }
+                
+                List {
+                    ForEach(posts) { post in
+                        NavigationLink {
+                            PostView(post: post)
+                        } label: {
+                            ZStack {
+                                Rectangle()
+                                    .frame(height: 100)
+                                    .foregroundColor(.black.opacity(0.7))
+                                    .cornerRadius(9)
+                                
+                                Text(post.title)
+                                    .foregroundColor(.white)
+                            }
                         }
                     }
                 }

@@ -24,12 +24,14 @@ struct ContactView: View {
                     Circle()
                         .frame(width: 250, height: 250)
                         .shadow(radius: 20, x: 30, y: -10)
+                        .foregroundColor(Color("BCGold"))
                     
                     VStack {
                         Text("🚨")
                             .font(.system(size: 100))
                         Text("Press In Emergency")
-                            .foregroundColor(.black)
+                            .foregroundColor(Color("BCMaroon"))
+                            .bold()
                     }
                 }
             }
