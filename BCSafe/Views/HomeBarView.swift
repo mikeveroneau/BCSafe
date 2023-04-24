@@ -28,7 +28,7 @@ struct HomeBarView: View {
                 }
                 .tag(1)
             
-            MapViewModel()
+            MapView()
                 .tabItem {
                     Image(systemName: "map")
                     Text("Map")

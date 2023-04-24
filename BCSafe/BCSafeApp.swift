@@ -31,6 +31,7 @@ struct BCSafeApp: App {
     @StateObject var homescreenVM = HomescreenViewModel()
     @StateObject var locationManager = LocationManager()
     @StateObject var loginVM = LoginViewModel()
+    @StateObject var staticAEDVM = StaticAnnotationsViewModel()
     
     var body: some Scene {
         WindowGroup {
@@ -38,6 +39,7 @@ struct BCSafeApp: App {
                 .environmentObject(homescreenVM)
                 .environmentObject(locationManager)
                 .environmentObject(loginVM)
+                .environmentObject(staticAEDVM)
         }
     }
 }

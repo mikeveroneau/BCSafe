@@ -27,6 +27,7 @@
 		278C6E2529F08D2F00115BA4 /* HomeBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 278C6E2429F08D2F00115BA4 /* HomeBarView.swift */; };
 		279155AB29F5CE2F002858FE /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 279155AA29F5CE2F002858FE /* GoogleService-Info.plist */; };
 		279155AE29F5D32A002858FE /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 279155AD29F5D32A002858FE /* LoginViewModel.swift */; };
+		2794757729F6F82200F3559D /* StaticAnnotationsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2794757629F6F82200F3559D /* StaticAnnotationsViewModel.swift */; };
 		27DD84F229F3340F004E0BFB /* Annotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27DD84F129F3340F004E0BFB /* Annotation.swift */; };
 /* End PBXBuildFile section */
 
@@ -47,6 +48,7 @@
 		279155AA29F5CE2F002858FE /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "GoogleService-Info.plist"; sourceTree = SOURCE_ROOT; };
 		279155AC29F5CEFA002858FE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		279155AD29F5D32A002858FE /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
+		2794757629F6F82200F3559D /* StaticAnnotationsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StaticAnnotationsViewModel.swift; sourceTree = "<group>"; };
 		27DD84F129F3340F004E0BFB /* Annotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Annotation.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -112,6 +114,7 @@
 				272A868829F0B37C00B26A54 /* LocationManager.swift */,
 				27622CC029F07F6800BB00C4 /* HomescreenViewModel.swift */,
 				279155AD29F5D32A002858FE /* LoginViewModel.swift */,
+				2794757629F6F82200F3559D /* StaticAnnotationsViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -221,6 +224,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2794757729F6F82200F3559D /* StaticAnnotationsViewModel.swift in Sources */,
 				279155AE29F5D32A002858FE /* LoginViewModel.swift in Sources */,
 				27622CB929F0729300BB00C4 /* PostView.swift in Sources */,
 				278C6E2529F08D2F00115BA4 /* HomeBarView.swift in Sources */,
