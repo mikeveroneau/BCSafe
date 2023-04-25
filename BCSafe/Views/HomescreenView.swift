@@ -27,7 +27,7 @@ struct HomescreenView: View {
                 List {
                     ForEach(posts.sorted(by: { $0.postedOn > $1.postedOn })) { post in
                         NavigationLink {
-                            PostView(post: post)
+                            PostView(post: post, annotation: post.annotation)
                         } label: {
                             ZStack {
                                 Rectangle()
@@ -84,7 +84,7 @@ struct HomescreenView: View {
             }
             .sheet(isPresented: $postSheetIsPresented) {
                 NavigationStack {
-                    PostView(post: Post())
+                    PostView(post: Post(), annotation: Annotation())
                 }
             }
         }

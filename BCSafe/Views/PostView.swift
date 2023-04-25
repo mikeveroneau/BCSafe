@@ -14,11 +14,10 @@ struct PostView: View {
     @EnvironmentObject var homescreenVM: HomescreenViewModel
     @EnvironmentObject var locationManager: LocationManager
     
-    @FirestoreQuery(collectionPath: "posts") var annotations: [Annotation]
-    
     @Environment(\.dismiss) var dismiss
     
     @State var post: Post
+    @State var annotation: Annotation
     @State var postedByThisUser = false
     @State private var annotationsSmallMap: [Annotation] = []
     @State private var imageFront = "180"
@@ -107,10 +106,7 @@ struct PostView: View {
                 if post.reviewer == Auth.auth().currentUser?.email {
                     postedByThisUser = true
                 }
-                annotationsSmallMap = [post.annotation] //TODO: fix this
-                if post.id != nil {
-                    $annotations.path = "posts/\(post.id ?? "")/annotations"
-                }
+                annotationsSmallMap = [annotation]
             }
             .toolbar {
                 if postedByThisUser {
@@ -153,7 +149,7 @@ struct PostView: View {
                         
                         Button {
                             Task {
-                                let success = await homescreenVM.deletePost(post: post)
+                                let success = await homescreenVM.deletePost(post: post, annotation: post.annotation)
                                 if success {
                                     dismiss()
                                 }
@@ -161,7 +157,6 @@ struct PostView: View {
                         } label: {
                             Image(systemName: "trash")
                         }
-
                     }
                 }
             }
@@ -173,7 +168,7 @@ struct PostView: View {
 struct PostView_Previews: PreviewProvider {
     static var previews: some View {
         NavigationStack {
-            PostView(post: Post())
+            PostView(post: Post(), annotation: Annotation())
                 .environmentObject(HomescreenViewModel())
                 .environmentObject(LocationManager())
         }

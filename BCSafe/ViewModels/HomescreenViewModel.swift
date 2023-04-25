@@ -1,10 +1,3 @@
-//
-//  HomescreenViewModel.swift
-//  BCSafe
-//
-//  Created by mike on 4/19/23.
-//
-
 import Foundation
 import FirebaseFirestore
 import UIKit
@@ -15,7 +8,6 @@ import FirebaseStorage
 class HomescreenViewModel: ObservableObject {
     @Published var post = Post()
     @Published var annotation = Annotation()
-    var annotationsLargeMap: [Annotation] = []
     
     func savePost(post: Post, annotation: Annotation, showUserLocation: Bool) async -> Bool {
         let db = Firestore.firestore()
@@ -29,8 +21,9 @@ class HomescreenViewModel: ObservableObject {
                     print("Already an annotation")
                 } else {
                     if showUserLocation {
-                        _ = try await subcollectionRef.addDocument(data: annotation.dictionary)
-                        annotationsLargeMap.append(annotation)
+                        let annotationDocumentRef = try await subcollectionRef.addDocument(data: annotation.dictionary)
+                        self.annotation = annotation
+                        self.annotation.id = annotationDocumentRef.documentID
                     }
                     print("Re-added annotation")
                 }
@@ -46,8 +39,9 @@ class HomescreenViewModel: ObservableObject {
                 self.post = post
                 self.post.id = documentRef.documentID
                 if showUserLocation {
-                    _ = try await db.collection("posts/\(self.post.id!)/annotations").addDocument(data: annotation.dictionary)
-                    annotationsLargeMap.append(annotation)
+                    let annotationDocumentRef = try await db.collection("posts/\(self.post.id!)/annotations").addDocument(data: annotation.dictionary)
+                    self.annotation = annotation
+                    self.annotation.id = annotationDocumentRef.documentID
                 }
                 print("🐣 Data added successfully!")
                 return true
@@ -58,7 +52,7 @@ class HomescreenViewModel: ObservableObject {
         }
     }
     
-    func deletePost(post: Post) async -> Bool {
+    func deletePost(post: Post, annotation: Annotation) async -> Bool {
         let db = Firestore.firestore()
         guard let postID = post.id else {
             print("😡 ERROR: post.id = \(post.id ?? "nil"). This should not have happened.")
@@ -74,7 +68,6 @@ class HomescreenViewModel: ObservableObject {
                     batch.deleteDocument(document.reference)
                 }
                 try await batch.commit()
-                annotationsLargeMap.removeAll(where: {$0.id == post.annotation.id})
                 print("🗑️ Subcollection succesfully deleted")
             } catch {
                 print("😡 ERROR: removing subcollection \(error.localizedDescription)")
@@ -105,8 +98,6 @@ class HomescreenViewModel: ObservableObject {
                     batch.deleteDocument(document.reference)
                 }
                 try await batch.commit()
-                annotationsLargeMap.removeAll(where: {$0.id == post.annotation.id})
-                //TODO: Make this work
                 print("🗑️ Subcollection succesfully deleted")
             } catch {
                 print("😡 ERROR: removing subcollection \(error.localizedDescription)")

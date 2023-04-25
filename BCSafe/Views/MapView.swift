@@ -4,29 +4,28 @@
 //
 //  Created by mike on 4/19/23.
 //
-
 import SwiftUI
 import MapKit
 import FirebaseFirestoreSwift
 
 struct MapView: View {
     @FirestoreQuery(collectionPath: "posts") var posts: [Post]
-    @FirestoreQuery(collectionPath: "posts") var annotations: [Annotation]
+    //@FirestoreQuery(collectionPath: "posts") var annotations: [Annotation]
     
     @EnvironmentObject var homescreenVM: HomescreenViewModel
     @EnvironmentObject var locationManager: LocationManager
     @EnvironmentObject var staticAEDVM: StaticAnnotationsViewModel
     
-    //@State private var annotationsLargeMap: [Annotation] = []
+    @State private var annotationsLargeMap: [Annotation] = []
     @State private var showMessage = false
-    @State private var showAED = true
+    @State private var showAED = false
     @State private var aedButton = ""
     @State private var showAEDAlert = false
     @State private var aedAlertMessage = ""
     
     var body: some View {
         ZStack {
-            Map(coordinateRegion: $locationManager.region, showsUserLocation: true, annotationItems: homescreenVM.annotationsLargeMap) { annotation in
+            Map(coordinateRegion: $locationManager.region, showsUserLocation: true, annotationItems: annotationsLargeMap) { annotation in
                 MapAnnotation(coordinate: annotation.coordinate) {
                     if annotation.title.contains("AED -") {
                         Button {
@@ -66,14 +65,13 @@ struct MapView: View {
                     .blur(radius: 5)
                     .ignoresSafeArea()
                     .frame(height: 8)
-                //TODO: Fix this
                 
                 Spacer()
             }
             
             ZStack {
                 Rectangle()
-                    .frame(width: 52, height: 52)
+                    .frame(width: 30, height: 30)
                     .foregroundColor(.white)
                     .cornerRadius(6)
                 
@@ -82,10 +80,10 @@ struct MapView: View {
                     showAED.toggle()
                     if showAED {
                         for aed in staticAEDVM.aedLocations {
-                            homescreenVM.annotationsLargeMap.append(aed)
+                            annotationsLargeMap.append(aed)
                         }
                     } else {
-                        homescreenVM.annotationsLargeMap.removeAll(where: {staticAEDVM.aedLocations.contains($0)})
+                        annotationsLargeMap.removeAll(where: { staticAEDVM.aedLocations.contains($0) })
                     }
                 } label: {
                     if showAED {
@@ -94,7 +92,6 @@ struct MapView: View {
                         Image(systemName: "heart")
                     }
                 }
-                .font(.system(size: 35))
                 .foregroundColor(.red)
             }
             .padding(.leading, 300)
@@ -104,20 +101,14 @@ struct MapView: View {
             Button("OK", role: .cancel) {}
         }
         .onAppear {
-            for aed in staticAEDVM.aedLocations {
-                homescreenVM.annotationsLargeMap.append(aed)
-            }
-        }
-//        .onChange(of: posts) { _ in
-//            annotationsLargeMap.removeAll()
+            //coordinateRegion = locationManager.region
 //            for post in posts {
-//                $annotations.path = "posts/\(post.id ?? "")/annotations"
-//                for annotation in annotations {
-//                    annotationsLargeMap.append(annotation)
-//                }
+//                annotationsLargeMap.append(post.annotation)
 //            }
-//            //TODO: Make this work right
-//        }
+//            annotationsLargeMap = annotationsLargeMap.filter {annotation in
+//                return posts.contains {$0.annotation.id == annotation.id} || staticAEDVM.aedLocations.contains {$0.id == annotation.id}
+//            }
+        }
     }
 }
 
