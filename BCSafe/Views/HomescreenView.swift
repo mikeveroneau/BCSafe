@@ -92,9 +92,9 @@ struct HomescreenView: View {
     func postAge(date: Date) -> String {
         let dateSince = date.timeIntervalSince(Date.now)
         if abs(dateSince)/3600 >= 1.0 {
-            return String(abs(Int(dateSince)/3600))+" h ago"
+            return String(abs(Int(dateSince)/3600))+"h ago"
         } else {
-            return String(abs(Int(dateSince)/60))+" m ago"
+            return String(abs(Int(dateSince)/60))+"m ago"
         }
     }
 }

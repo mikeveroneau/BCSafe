@@ -34,9 +34,10 @@ struct MapView: View {
                             aedAlertMessage = annotation.title
                             showAEDAlert = true
                         } label: {
-                            Image(systemName: "heart.fill")
-                                .font(.system(size: 30))
-                                .foregroundColor(.red)
+                            Image("aed")
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 30, height: 30)
                         }
                     } else if showPosts {
                         Button {
@@ -84,9 +85,14 @@ struct MapView: View {
                         }
                     } label: {
                         if showAED {
-                            Image(systemName: "heart.fill")
+                            Image("aed")
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 30, height: 30)
                         } else {
                             Image(systemName: "heart")
+                                .font(.system(size: 30))
+                                .foregroundColor(.red)
                         }
                     }
                     .padding(.bottom, 12)
@@ -100,12 +106,12 @@ struct MapView: View {
                             Image(systemName: "mappin.slash")
                         }
                     }
+                    .foregroundColor(.red)
+                    .font(.system(size: 30))
                 }
-                .foregroundColor(.red)
-                .font(.system(size: 30))
             }
             .padding(.leading, 300)
-            .padding(.bottom, 600)
+            .padding(.bottom, 550)
         }
         .alert(aedAlertMessage, isPresented: $showAEDAlert) {
             Button("OK", role: .cancel) {}

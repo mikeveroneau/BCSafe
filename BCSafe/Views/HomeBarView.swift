@@ -35,6 +35,7 @@ struct HomeBarView: View {
                 }
                 .tag(2)
         }
+        .background(.gray.opacity(0.3))
     }
 }
 
