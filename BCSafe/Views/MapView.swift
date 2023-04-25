@@ -10,7 +10,6 @@ import FirebaseFirestoreSwift
 
 struct MapView: View {
     @FirestoreQuery(collectionPath: "posts") var posts: [Post]
-    //@FirestoreQuery(collectionPath: "posts") var annotations: [Annotation]
     
     @EnvironmentObject var homescreenVM: HomescreenViewModel
     @EnvironmentObject var locationManager: LocationManager
@@ -19,15 +18,18 @@ struct MapView: View {
     @State private var annotationsLargeMap: [Post] = []
     @State private var showMessage = false
     @State private var showAED = false
+    @State private var showPosts = true
     @State private var aedButton = ""
     @State private var showAEDAlert = false
     @State private var aedAlertMessage = ""
+    @State private var showPostAlert = false
+    @State private var postAlertMessage = ""
     
     var body: some View {
         ZStack {
             Map(coordinateRegion: $locationManager.region, showsUserLocation: true, annotationItems: posts.filter({$0.showUserLocation == true})+annotationsLargeMap) { annotation in
                 MapAnnotation(coordinate: annotation.coordinate) {
-                    if annotation.title.contains("AED -") {
+                    if annotation.eventLocation.isEmpty && showAED {
                         Button {
                             aedAlertMessage = annotation.title
                             showAEDAlert = true
@@ -36,24 +38,14 @@ struct MapView: View {
                                 .font(.system(size: 30))
                                 .foregroundColor(.red)
                         }
-                    } else {
+                    } else if showPosts {
                         Button {
-                            showMessage.toggle()
+                            postAlertMessage = "\(annotation.title): \(annotation.message)\nLocation: \(annotation.eventLocation)"
+                            showPostAlert = true
                         } label: {
                             Image(systemName: "mappin")
                                 .font(.system(size: 40))
                                 .foregroundColor(.red)
-                        }
-                        //FIX THIS BECAUSE IT SHOWS MESSAGE FOR ALL (MAYBE DO AN ALERT INSTEAD)
-                        if showMessage {
-                            ZStack {
-                                Rectangle()
-                                    .foregroundColor(.white)
-                                    .cornerRadius(3)
-                                
-                                Text(annotation.title)
-                                    .bold()
-                            }
                         }
                     }
                 }
@@ -72,33 +64,53 @@ struct MapView: View {
             
             ZStack {
                 Rectangle()
-                    .frame(width: 30, height: 30)
+                    .frame(width: 45, height: 100)
                     .foregroundColor(.white)
                     .cornerRadius(6)
+                Rectangle()
+                    .frame(width: 45, height: 1)
+                    .foregroundColor(.gray)
                 
-                
-                Button {
-                    showAED.toggle()
-                    if showAED {
-                        for aed in staticAEDVM.aedLocations {
-                            annotationsLargeMap.append(aed)
+                VStack {
+                    
+                    Button {
+                        showAED.toggle()
+                        if showAED {
+                            for aed in staticAEDVM.aedLocations {
+                                annotationsLargeMap.append(aed)
+                            }
+                        } else {
+                            annotationsLargeMap.removeAll(where: {staticAEDVM.aedLocations.contains($0)})
                         }
-                    } else {
-                        annotationsLargeMap.removeAll(where: {staticAEDVM.aedLocations.contains($0)})
+                    } label: {
+                        if showAED {
+                            Image(systemName: "heart.fill")
+                        } else {
+                            Image(systemName: "heart")
+                        }
                     }
-                } label: {
-                    if showAED {
-                        Image(systemName: "heart.fill")
-                    } else {
-                        Image(systemName: "heart")
+                    .padding(.bottom, 12)
+                    
+                    Button {
+                        showPosts.toggle()
+                    } label: {
+                        if showPosts {
+                            Image(systemName: "mappin")
+                        } else {
+                            Image(systemName: "mappin.slash")
+                        }
                     }
                 }
                 .foregroundColor(.red)
+                .font(.system(size: 30))
             }
             .padding(.leading, 300)
             .padding(.bottom, 600)
         }
         .alert(aedAlertMessage, isPresented: $showAEDAlert) {
+            Button("OK", role: .cancel) {}
+        }
+        .alert(postAlertMessage, isPresented: $showPostAlert) {
             Button("OK", role: .cancel) {}
         }
     }
