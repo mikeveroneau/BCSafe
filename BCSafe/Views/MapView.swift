@@ -22,6 +22,7 @@ struct MapView: View {
     @State private var aedButton = ""
     @State private var showAEDAlert = false
     @State private var aedAlertMessage = ""
+    @State private var directionsAED = Post()
     @State private var showPostAlert = false
     @State private var postAlertMessage = ""
     
@@ -32,6 +33,7 @@ struct MapView: View {
                     if annotation.eventLocation.isEmpty && showAED {
                         Button {
                             aedAlertMessage = annotation.title
+                            directionsAED = annotation
                             showAEDAlert = true
                         } label: {
                             Image("aed")
@@ -115,6 +117,9 @@ struct MapView: View {
         }
         .alert(aedAlertMessage, isPresented: $showAEDAlert) {
             Button("OK", role: .cancel) {}
+            Button("Get Directions") {
+                staticAEDVM.getDirections(aed: directionsAED)
+            }
         }
         .alert(postAlertMessage, isPresented: $showPostAlert) {
             Button("OK", role: .cancel) {}

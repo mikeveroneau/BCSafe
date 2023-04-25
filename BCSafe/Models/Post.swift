@@ -31,5 +31,4 @@ struct Post: Identifiable, Codable, Equatable {
     var dictionary: [String: Any] {
         return ["title": title, "message": message, "eventLocation": eventLocation, "showUserLocation": showUserLocation, "postedOn": Timestamp(date: Date()), "reviewer": reviewer, "latitude": latitude, "longitude": longitude]
     }
-    //TODO: Need to figure out a way to add annotations
 }
