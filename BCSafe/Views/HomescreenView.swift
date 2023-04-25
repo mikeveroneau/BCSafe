@@ -25,18 +25,35 @@ struct HomescreenView: View {
                 }
                 
                 List {
-                    ForEach(posts) { post in
+                    ForEach(posts.sorted(by: { $0.postedOn > $1.postedOn })) { post in
                         NavigationLink {
                             PostView(post: post)
                         } label: {
                             ZStack {
                                 Rectangle()
                                     .frame(height: 100)
-                                    .foregroundColor(.black.opacity(0.7))
+                                    .foregroundColor(Color("BCGold"))
                                     .cornerRadius(9)
                                 
-                                Text(post.title)
-                                    .foregroundColor(.white)
+                                VStack {
+                                    Text(post.title)
+                                        .lineLimit(1)
+                                        .minimumScaleFactor(0.7)
+                                        .frame(maxWidth: .infinity, alignment: .leading)
+                                        .font(.system(size: 40))
+                                        .bold()
+                                    
+                                    HStack {
+                                        Text(post.message)
+                                            .frame(maxWidth: .infinity, alignment: .leading)
+                                            .lineLimit(1)
+                                        
+                                        Text(postAge(date: post.postedOn))
+                                            .padding(.trailing)
+                                    }
+                                }
+                                .foregroundColor(.black.opacity(0.7))
+                                .padding(.leading)
                             }
                         }
                     }
@@ -70,6 +87,14 @@ struct HomescreenView: View {
                     PostView(post: Post())
                 }
             }
+        }
+    }
+    func postAge(date: Date) -> String {
+        let dateSince = date.timeIntervalSince(Date.now)
+        if abs(dateSince)/3600 >= 1.0 {
+            return String(abs(Int(dateSince)/3600))+" h ago"
+        } else {
+            return String(abs(Int(dateSince)/60))+" m ago"
         }
     }
 }

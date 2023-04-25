@@ -19,7 +19,6 @@ struct MapView: View {
     
     @State private var annotationsLargeMap: [Annotation] = []
     @State private var showMessage = false
-    @State private var coordinateRegion = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: 0.0, longitude: 0.0), span: MKCoordinateSpan(latitudeDelta: 0.0, longitudeDelta: 0.0))
     @State private var showAED = true
     @State private var aedButton = ""
     @State private var showAEDAlert = false
@@ -27,7 +26,7 @@ struct MapView: View {
     
     var body: some View {
         ZStack {
-            Map(coordinateRegion: $coordinateRegion, showsUserLocation: true, annotationItems: annotationsLargeMap) { annotation in
+            Map(coordinateRegion: $locationManager.region, showsUserLocation: true, annotationItems: annotationsLargeMap) { annotation in
                 MapAnnotation(coordinate: annotation.coordinate) {
                     if annotation.title.contains("AED -") {
                         Button {
@@ -77,7 +76,7 @@ struct MapView: View {
                     .frame(width: 30, height: 30)
                     .foregroundColor(.white)
                     .cornerRadius(6)
-
+                
                 
                 Button {
                     showAED.toggle()
@@ -104,7 +103,7 @@ struct MapView: View {
             Button("OK", role: .cancel) {}
         }
         .onAppear {
-            coordinateRegion = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: locationManager.location?.coordinate.latitude ?? 0.0, longitude: locationManager.location?.coordinate.longitude ?? 0.0), span: MKCoordinateSpan(latitudeDelta: 0.0045, longitudeDelta: 0.0045))
+            //coordinateRegion = locationManager.region
             for aed in staticAEDVM.aedLocations {
                 annotationsLargeMap.append(aed)
             }

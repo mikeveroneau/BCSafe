@@ -20,10 +20,6 @@ struct PostView: View {
     
     @State var post: Post
     @State var postedByThisUser = false
-    @State private var mapRegion = MKCoordinateRegion()
-    @State private var coordinateRegion = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: 0.0, longitude: 0.0), span: MKCoordinateSpan(latitudeDelta: 0.0, longitudeDelta: 0.0))
-    let annotation = MKPointAnnotation()
-    @State private var userCoordinateRegion = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: 0.0, longitude: 0.0), span: MKCoordinateSpan(latitudeDelta: 0.0, longitudeDelta: 0.0))
     @State private var annotationsSmallMap: [Annotation] = []
     @State private var imageFront = "180"
     @State private var imageBack = "0"
@@ -67,11 +63,11 @@ struct PostView: View {
                 
                 if post.showUserLocation {
                     if post.id == nil {
-                        Map(coordinateRegion: $userCoordinateRegion, showsUserLocation: true)
+                        Map(coordinateRegion: $locationManager.region, showsUserLocation: true)
                             .cornerRadius(10)
                     } else {
                         HStack {
-                            Map(coordinateRegion: $coordinateRegion, showsUserLocation: false, annotationItems: annotationsSmallMap) { annotation in
+                            Map(coordinateRegion: $locationManager.region, showsUserLocation: false, annotationItems: annotationsSmallMap) { annotation in
                                 MapAnnotation(coordinate: annotation.coordinate) {
                                     Image(systemName: "mappin")
                                         .font(.system(size: 40))
@@ -111,8 +107,6 @@ struct PostView: View {
                 if post.reviewer == Auth.auth().currentUser?.email {
                     postedByThisUser = true
                 }
-                userCoordinateRegion = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: locationManager.location?.coordinate.latitude ?? 0.0, longitude: locationManager.location?.coordinate.longitude ?? 0.0), span: MKCoordinateSpan(latitudeDelta: 0.0045, longitudeDelta: 0.0045))
-                coordinateRegion = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: post.latitude, longitude: post.longitude), span: MKCoordinateSpan(latitudeDelta: 0.0045, longitudeDelta: 0.0045))
                 annotationsSmallMap = [post.annotation] //TODO: fix this
                 if post.id != nil {
                     $annotations.path = "posts/\(post.id ?? "")/annotations"

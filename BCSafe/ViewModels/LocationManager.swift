@@ -10,8 +10,8 @@ import MapKit
 
 @MainActor
 class LocationManager: NSObject, ObservableObject {
-    @Published var location: CLLocation?
-    @Published var region = MKCoordinateRegion()
+    var location: CLLocation?
+    var region = MKCoordinateRegion()
     
     private let locationManager = CLLocationManager()
     
@@ -20,7 +20,7 @@ class LocationManager: NSObject, ObservableObject {
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
         locationManager.distanceFilter = kCLDistanceFilterNone
         locationManager.requestAlwaysAuthorization()
-        locationManager.startUpdatingLocation() //remember to update Info.plist
+        locationManager.startUpdatingLocation()
         locationManager.delegate = self
     }
 }
@@ -29,6 +29,6 @@ extension LocationManager: CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         guard let location = locations.last else {return}
         self.location = location
-        self.region = MKCoordinateRegion(center: location.coordinate, latitudinalMeters: 5000, longitudinalMeters: 5000)
+        self.region = MKCoordinateRegion(center: location.coordinate, span: MKCoordinateSpan(latitudeDelta: 0.0045, longitudeDelta: 0.0045))
     }
 }
