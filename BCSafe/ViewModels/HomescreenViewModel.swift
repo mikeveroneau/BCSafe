@@ -15,6 +15,7 @@ import FirebaseStorage
 class HomescreenViewModel: ObservableObject {
     @Published var post = Post()
     @Published var annotation = Annotation()
+    var annotationsLargeMap: [Annotation] = []
     
     func savePost(post: Post, annotation: Annotation, showUserLocation: Bool) async -> Bool {
         let db = Firestore.firestore()
@@ -29,6 +30,7 @@ class HomescreenViewModel: ObservableObject {
                 } else {
                     if showUserLocation {
                         _ = try await subcollectionRef.addDocument(data: annotation.dictionary)
+                        annotationsLargeMap.append(annotation)
                     }
                     print("Re-added annotation")
                 }
@@ -45,6 +47,7 @@ class HomescreenViewModel: ObservableObject {
                 self.post.id = documentRef.documentID
                 if showUserLocation {
                     _ = try await db.collection("posts/\(self.post.id!)/annotations").addDocument(data: annotation.dictionary)
+                    annotationsLargeMap.append(annotation)
                 }
                 print("🐣 Data added successfully!")
                 return true
@@ -71,6 +74,7 @@ class HomescreenViewModel: ObservableObject {
                     batch.deleteDocument(document.reference)
                 }
                 try await batch.commit()
+                annotationsLargeMap.removeAll(where: {$0.id == post.annotation.id})
                 print("🗑️ Subcollection succesfully deleted")
             } catch {
                 print("😡 ERROR: removing subcollection \(error.localizedDescription)")
@@ -101,6 +105,8 @@ class HomescreenViewModel: ObservableObject {
                     batch.deleteDocument(document.reference)
                 }
                 try await batch.commit()
+                annotationsLargeMap.removeAll(where: {$0.id == post.annotation.id})
+                //TODO: Make this work
                 print("🗑️ Subcollection succesfully deleted")
             } catch {
                 print("😡 ERROR: removing subcollection \(error.localizedDescription)")

@@ -17,7 +17,7 @@ struct MapView: View {
     @EnvironmentObject var locationManager: LocationManager
     @EnvironmentObject var staticAEDVM: StaticAnnotationsViewModel
     
-    @State private var annotationsLargeMap: [Annotation] = []
+    //@State private var annotationsLargeMap: [Annotation] = []
     @State private var showMessage = false
     @State private var showAED = true
     @State private var aedButton = ""
@@ -26,7 +26,7 @@ struct MapView: View {
     
     var body: some View {
         ZStack {
-            Map(coordinateRegion: $locationManager.region, showsUserLocation: true, annotationItems: annotationsLargeMap) { annotation in
+            Map(coordinateRegion: $locationManager.region, showsUserLocation: true, annotationItems: homescreenVM.annotationsLargeMap) { annotation in
                 MapAnnotation(coordinate: annotation.coordinate) {
                     if annotation.title.contains("AED -") {
                         Button {
@@ -73,7 +73,7 @@ struct MapView: View {
             
             ZStack {
                 Rectangle()
-                    .frame(width: 30, height: 30)
+                    .frame(width: 52, height: 52)
                     .foregroundColor(.white)
                     .cornerRadius(6)
                 
@@ -82,10 +82,10 @@ struct MapView: View {
                     showAED.toggle()
                     if showAED {
                         for aed in staticAEDVM.aedLocations {
-                            annotationsLargeMap.append(aed)
+                            homescreenVM.annotationsLargeMap.append(aed)
                         }
                     } else {
-                        annotationsLargeMap.removeAll(where: { staticAEDVM.aedLocations.contains($0) })
+                        homescreenVM.annotationsLargeMap.removeAll(where: {staticAEDVM.aedLocations.contains($0)})
                     }
                 } label: {
                     if showAED {
@@ -94,6 +94,7 @@ struct MapView: View {
                         Image(systemName: "heart")
                     }
                 }
+                .font(.system(size: 35))
                 .foregroundColor(.red)
             }
             .padding(.leading, 300)
@@ -103,21 +104,20 @@ struct MapView: View {
             Button("OK", role: .cancel) {}
         }
         .onAppear {
-            //coordinateRegion = locationManager.region
             for aed in staticAEDVM.aedLocations {
-                annotationsLargeMap.append(aed)
+                homescreenVM.annotationsLargeMap.append(aed)
             }
         }
-        .onChange(of: posts) { _ in
-            annotationsLargeMap.removeAll()
-            for post in posts {
-                $annotations.path = "posts/\(post.id ?? "")/annotations"
-                for annotation in annotations {
-                    annotationsLargeMap.append(annotation)
-                }
-            }
-            //TODO: Make this work right
-        }
+//        .onChange(of: posts) { _ in
+//            annotationsLargeMap.removeAll()
+//            for post in posts {
+//                $annotations.path = "posts/\(post.id ?? "")/annotations"
+//                for annotation in annotations {
+//                    annotationsLargeMap.append(annotation)
+//                }
+//            }
+//            //TODO: Make this work right
+//        }
     }
 }
 
