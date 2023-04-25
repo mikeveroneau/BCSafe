@@ -16,7 +16,7 @@ struct MapView: View {
     @EnvironmentObject var locationManager: LocationManager
     @EnvironmentObject var staticAEDVM: StaticAnnotationsViewModel
     
-    @State private var annotationsLargeMap: [Annotation] = []
+    @State private var annotationsLargeMap: [Post] = []
     @State private var showMessage = false
     @State private var showAED = false
     @State private var aedButton = ""
@@ -25,7 +25,7 @@ struct MapView: View {
     
     var body: some View {
         ZStack {
-            Map(coordinateRegion: $locationManager.region, showsUserLocation: true, annotationItems: annotationsLargeMap) { annotation in
+            Map(coordinateRegion: $locationManager.region, showsUserLocation: true, annotationItems: posts.filter({$0.showUserLocation == true})+annotationsLargeMap) { annotation in
                 MapAnnotation(coordinate: annotation.coordinate) {
                     if annotation.title.contains("AED -") {
                         Button {
@@ -44,6 +44,7 @@ struct MapView: View {
                                 .font(.system(size: 40))
                                 .foregroundColor(.red)
                         }
+                        //FIX THIS BECAUSE IT SHOWS MESSAGE FOR ALL (MAYBE DO AN ALERT INSTEAD)
                         if showMessage {
                             ZStack {
                                 Rectangle()
@@ -83,7 +84,7 @@ struct MapView: View {
                             annotationsLargeMap.append(aed)
                         }
                     } else {
-                        annotationsLargeMap.removeAll(where: { staticAEDVM.aedLocations.contains($0) })
+                        annotationsLargeMap.removeAll(where: {staticAEDVM.aedLocations.contains($0)})
                     }
                 } label: {
                     if showAED {
@@ -99,15 +100,6 @@ struct MapView: View {
         }
         .alert(aedAlertMessage, isPresented: $showAEDAlert) {
             Button("OK", role: .cancel) {}
-        }
-        .onAppear {
-            //coordinateRegion = locationManager.region
-//            for post in posts {
-//                annotationsLargeMap.append(post.annotation)
-//            }
-//            annotationsLargeMap = annotationsLargeMap.filter {annotation in
-//                return posts.contains {$0.annotation.id == annotation.id} || staticAEDVM.aedLocations.contains {$0.id == annotation.id}
-//            }
         }
     }
 }

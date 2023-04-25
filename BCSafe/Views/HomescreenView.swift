@@ -25,7 +25,7 @@ struct HomescreenView: View {
                 }
                 
                 List {
-                    ForEach(posts.sorted(by: { $0.postedOn > $1.postedOn })) { post in
+                    ForEach(posts.sorted(by: {$0.postedOn > $1.postedOn})) { post in
                         NavigationLink {
                             PostView(post: post, annotation: post.annotation)
                         } label: {

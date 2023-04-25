@@ -52,7 +52,7 @@ class HomescreenViewModel: ObservableObject {
         }
     }
     
-    func deletePost(post: Post, annotation: Annotation) async -> Bool {
+    func deletePost(post: Post) async -> Bool {
         let db = Firestore.firestore()
         guard let postID = post.id else {
             print("😡 ERROR: post.id = \(post.id ?? "nil"). This should not have happened.")

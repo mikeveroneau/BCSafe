@@ -149,7 +149,7 @@ struct PostView: View {
                         
                         Button {
                             Task {
-                                let success = await homescreenVM.deletePost(post: post, annotation: post.annotation)
+                                let success = await homescreenVM.deletePost(post: post)
                                 if success {
                                     dismiss()
                                 }
