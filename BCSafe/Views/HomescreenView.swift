@@ -61,6 +61,18 @@ struct HomescreenView: View {
             }
             .navigationTitle("Alerts")
             .listStyle(.plain)
+            .onAppear {
+                for post in posts {
+                    let ageString = postAge(date: post.postedOn)
+                    let ageDigits = ageString.trimmingCharacters(in: CharacterSet.decimalDigits.inverted)
+                    let age = Int(ageDigits)!
+                    if ageString.contains("h") && (age >= 24) {
+                        Task {
+                            await homescreenVM.deletePost(post: post)
+                        }
+                    }
+                }
+            }
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     Button("Sign Out") {
