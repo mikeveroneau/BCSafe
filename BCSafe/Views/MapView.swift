@@ -46,8 +46,8 @@ struct MapView: View {
                             postAlertMessage = "\(annotation.title): \(annotation.message)\nLocation: \(annotation.eventLocation)"
                             showPostAlert = true
                         } label: {
-                            Image(systemName: "mappin")
-                                .font(.system(size: 40))
+                            Image(systemName: "exclamationmark.triangle.fill")
+                                .font(.system(size: 30))
                                 .foregroundColor(.red)
                         }
                     }
@@ -103,9 +103,9 @@ struct MapView: View {
                         showPosts.toggle()
                     } label: {
                         if showPosts {
-                            Image(systemName: "mappin")
+                            Image(systemName: "exclamationmark.triangle.fill")
                         } else {
-                            Image(systemName: "mappin.slash")
+                            Image(systemName: "exclamationmark.triangle")
                         }
                     }
                     .foregroundColor(.red)
@@ -135,3 +135,4 @@ struct MapView_Previews: PreviewProvider {
             .environmentObject(StaticAnnotationsViewModel())
     }
 }
+
