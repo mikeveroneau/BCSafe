@@ -22,6 +22,7 @@ struct PostView: View {
     @State private var annotationsSmallMap: [Annotation] = []
     @State private var imageFront = "180"
     @State private var imageBack = "0"
+    @State private var region = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: 0.0, longitude: 0.0), span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01))
     
     var body: some View {
         NavigationStack {
@@ -66,7 +67,7 @@ struct PostView: View {
                             .cornerRadius(10)
                     } else {
                         HStack {
-                            Map(coordinateRegion: $locationManager.region, showsUserLocation: false, annotationItems: annotationsSmallMap) { annotation in
+                            Map(coordinateRegion: $region, showsUserLocation: false, annotationItems: annotationsSmallMap) { annotation in
                                 MapAnnotation(coordinate: annotation.coordinate) {
                                     Image(systemName: "mappin")
                                         .font(.system(size: 40))
@@ -107,6 +108,7 @@ struct PostView: View {
                     postedByThisUser = true
                 }
                 annotationsSmallMap = [annotation]
+                region.center = post.coordinate
             }
             .toolbar {
                 if postedByThisUser {
