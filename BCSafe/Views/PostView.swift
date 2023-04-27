@@ -69,7 +69,7 @@ struct PostView: View {
                         HStack {
                             Map(coordinateRegion: $region, showsUserLocation: false, annotationItems: annotationsSmallMap) { annotation in
                                 MapAnnotation(coordinate: annotation.coordinate) {
-                                    Image(systemName: "mappin")
+                                    Image(systemName: "exclamationmark.triangle.fill")
                                         .font(.system(size: 40))
                                         .foregroundColor(.red)
                                 }
