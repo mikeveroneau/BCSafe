@@ -119,6 +119,7 @@
 				27622CC029F07F6800BB00C4 /* HomescreenViewModel.swift */,
 				279155AD29F5D32A002858FE /* LoginViewModel.swift */,
 				2794757629F6F82200F3559D /* StaticAnnotationsViewModel.swift */,
+				27067F7829FC1AA70038740B /* AddressViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -128,7 +129,6 @@
 			children = (
 				27622CBC29F0742800BB00C4 /* Post.swift */,
 				27DD84F129F3340F004E0BFB /* Annotation.swift */,
-				27067F7829FC1AA70038740B /* AddressViewModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
