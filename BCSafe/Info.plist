@@ -15,5 +15,10 @@
 	</array>
 	<key>GIDClientID</key>
 	<string>538114898916-jqg5ht0eigbmb1tmeurfkbr32cqocjds.apps.googleusercontent.com</string>
+	<key>UILaunchScreen</key>
+	<dict>
+		<key>UIImageName</key>
+		<string>logoTransparent</string>
+	</dict>
 </dict>
 </plist>
