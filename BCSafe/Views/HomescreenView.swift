@@ -49,11 +49,11 @@ struct HomescreenView: View {
                                             .lineLimit(1)
                                         
                                         Text(postAge(date: post.postedOn))
-                                            .padding(.trailing)
                                     }
                                 }
                                 .foregroundColor(.black.opacity(0.7))
                                 .padding(.leading)
+                                .padding(.trailing)
                             }
                         }
                     }

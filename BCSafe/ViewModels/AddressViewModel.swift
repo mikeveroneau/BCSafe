@@ -11,8 +11,6 @@ import Foundation
 class AddressViewModel: ObservableObject {
     @Published var address = ""
     
-    let urlStringTest = "https://api.geoapify.com/v1/geocode/reverse?lat=42.34255637880258&lon=-71.15860943016808&apiKey=48a0da4aa0d748e18fde3ffbe98ab96b"
-    
     struct Result: Codable {
         var features: [Features]
     }
