@@ -23,6 +23,8 @@ struct PostView: View {
     @State private var imageFront = "180"
     @State private var imageBack = "0"
     @State private var region = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: 0.0, longitude: 0.0), span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01))
+    @State var photoURL = ""
+    @State var showingSheet = false
     
     var body: some View {
         NavigationStack {
@@ -86,6 +88,10 @@ struct PostView: View {
                                         .resizable()
                                         .scaledToFit()
                                 }
+                                .onTapGesture {
+                                    photoURL = "https://maps.googleapis.com/maps/api/streetview?size=400x400&location=\(post.latitude),\(post.longitude)&fov=80&heading=\(imageFront)&pitch=0&key=AIzaSyDClUil_VpFPEeWKynObTH_yE6nfDPbPGw"
+                                    showingSheet = true
+                                }
                                 
                                 AsyncImage(url: URL(string: "https://maps.googleapis.com/maps/api/streetview?size=400x400&location=\(post.latitude),\(post.longitude)&fov=80&heading=\(imageBack)&pitch=0&key=AIzaSyDClUil_VpFPEeWKynObTH_yE6nfDPbPGw")) { image in
                                     image
@@ -95,6 +101,10 @@ struct PostView: View {
                                     Image(systemName: "photo")
                                         .resizable()
                                         .scaledToFit()
+                                }
+                                .onTapGesture {
+                                    photoURL = "https://maps.googleapis.com/maps/api/streetview?size=400x400&location=\(post.latitude),\(post.longitude)&fov=80&heading=\(imageBack)&pitch=0&key=AIzaSyDClUil_VpFPEeWKynObTH_yE6nfDPbPGw"
+                                    showingSheet = true
                                 }
                             }
                         }
@@ -109,6 +119,9 @@ struct PostView: View {
                 }
                 annotationsSmallMap = [annotation]
                 region.center = post.coordinate
+            }
+            .fullScreenCover(isPresented: $showingSheet) {
+                ImageView(photoURL: photoURL)
             }
             .toolbar {
                 if postedByThisUser {
