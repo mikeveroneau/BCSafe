@@ -8,6 +8,9 @@
 import SwiftUI
 
 struct ContactView: View {
+    @EnvironmentObject var addressVM: AddressViewModel
+    @EnvironmentObject var locationManager: LocationManager
+    
     struct Contact: Hashable {
         var title: String
         var number: String
@@ -18,7 +21,7 @@ struct ContactView: View {
     let phoneNumbers: [Contact] = [Contact(title: "BC Police (Non Emergency)", number: "617-552-4440"), Contact(title: "Eagle Escort", number: "617-552-8888"), Contact(title: "BC Emergency Information Line", number: "888-267-2655"), Contact(title: "University Health Services", number: "617-552-3225"), Contact(title: "University Consulting Services", number: "617-552-3310"), Contact(title: "Sexual Assault Network", number: "617-552-2211"), Contact(title: "Student Services", number: "617-552-3300")]
     
     var body: some View {
-        VStack {
+        VStack (spacing: 0) {
             Link(destination: URL(string: phoneNumber)!) {
                 ZStack {
                     Circle()
@@ -35,7 +38,11 @@ struct ContactView: View {
                     }
                 }
             }
-            .padding()
+            .padding(.top)
+            
+            Text("Location: \(addressVM.address)")
+                .padding(.horizontal)
+                .padding(.top)
             
             NavigationStack {
                 List {
@@ -48,6 +55,12 @@ struct ContactView: View {
                 .navigationTitle("Press to Call")
                 .listStyle(.plain)
             }
+            .padding(.bottom)
+        }
+        .onAppear {
+            Task {
+                await addressVM.getData(latitude: Double(String(format: "%.1f", (locationManager.location!.coordinate.latitude * 10000000000000)).dropLast(2))!/10000000000000, longitude: Double(String(format: "%.1f", (locationManager.location!.coordinate.longitude * 10000000000000)).dropLast(2))!/10000000000000)
+            }
         }
     }
 }
@@ -55,5 +68,7 @@ struct ContactView: View {
 struct ContactView_Previews: PreviewProvider {
     static var previews: some View {
         ContactView()
+            .environmentObject(AddressViewModel())
+            .environmentObject(LocationManager())
     }
 }
